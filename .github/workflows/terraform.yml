@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - main
-  jobs:
+
+jobs:
   ci:
+    name: CI - Lint and Checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,7 +21,6 @@ on:
       - name: Lint
         run: poetry run flake8 .
 
-
   cd:
     name: CD - Deploy Infra and DAGs
     needs: ci
@@ -27,10 +28,12 @@ on:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.6
+
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
@@ -38,18 +41,18 @@ on:
 
       - name: Deploy DAGs to Composer
         run: |
-          gsutil -m cp -r dags/* gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
+          gsutil -m cp -r dags gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
 
       - name: Deploy plugins to Composer
         run: |
-          gsutil -m cp -r plugins/* gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
+          gsutil -m cp -r plugins gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
-      
+
       - name: Deploy data to Composer
         run: |
-          gsutil -m cp -r data/* gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
+          gsutil -m cp -r data gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
