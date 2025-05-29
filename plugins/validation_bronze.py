@@ -9,7 +9,11 @@ CITI_BIKE_SCHEMA = {
         "network": {
             "type": "object",
             "properties": {
-                "company": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+                "company": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 1,
+                },
                 "href": {"type": "string", "format": "uri"},
                 "id": {"type": "string", "pattern": "^citi-bike-nyc$"},
                 "location": {
@@ -17,10 +21,18 @@ CITI_BIKE_SCHEMA = {
                     "properties": {
                         "city": {"type": "string", "pattern": "^New York(,? ?NY)?$"},
                         "country": {"type": "string", "pattern": "^US$"},
-                        "latitude": {"type": "number", "minimum": 40.4, "maximum": 40.9},
-                        "longitude": {"type": "number", "minimum": -74.3, "maximum": -73.7}
+                        "latitude": {
+                            "type": "number",
+                            "minimum": 40.4,
+                            "maximum": 40.9,
+                        },
+                        "longitude": {
+                            "type": "number",
+                            "minimum": -74.3,
+                            "maximum": -73.7,
+                        },
                     },
-                    "required": ["city", "country", "latitude", "longitude"]
+                    "required": ["city", "country", "latitude", "longitude"],
                 },
                 "name": {"type": "string", "pattern": "Citi Bike"},
                 "stations": {
@@ -35,33 +47,60 @@ CITI_BIKE_SCHEMA = {
                                 "properties": {
                                     "ebikes": {"type": "number", "minimum": 0},
                                     "has_ebikes": {"type": "boolean"},
-                                    "last_updated": {"type": "number", "minimum": 1_000_000_000},
+                                    "last_updated": {
+                                        "type": "number",
+                                        "minimum": 1_000_000_000,
+                                    },
                                     "uid": {
-                                         "anyOf": [
-                                                {"type": "number", "minimum": 1},
-                                                {"type": "string", "pattern": "^[a-f0-9\\-]{36}$"},
-                                                {"type": "string", "pattern": "^[0-9]+$"} 
-                                            ]   
-                                            }
+                                        "anyOf": [
+                                            {"type": "number", "minimum": 1},
+                                            {
+                                                "type": "string",
+                                                "pattern": "^[a-f0-9\\-]{36}$",
+                                            },
+                                            {"type": "string", "pattern": "^[0-9]+$"},
+                                        ]
+                                    },
                                 },
-                                "required": ["ebikes", "has_ebikes", "last_updated", "uid"]
+                                "required": [
+                                    "ebikes",
+                                    "has_ebikes",
+                                    "last_updated",
+                                    "uid",
+                                ],
                             },
                             "free_bikes": {"type": "number", "minimum": 0},
                             "id": {"type": "string", "minLength": 1},
-                            "latitude": {"type": "number", "minimum": 40.4, "maximum": 40.9},
-                            "longitude": {"type": "number", "minimum": -74.3, "maximum": -73.7},
+                            "latitude": {
+                                "type": "number",
+                                "minimum": 40.4,
+                                "maximum": 40.9,
+                            },
+                            "longitude": {
+                                "type": "number",
+                                "minimum": -74.3,
+                                "maximum": -73.7,
+                            },
                             "name": {"type": "string", "minLength": 1},
-                            "timestamp": {"type": "string", "format": "date-time"}
+                            "timestamp": {"type": "string", "format": "date-time"},
                         },
-                        "required": ["empty_slots", "free_bikes", "id", "latitude", "longitude", "name"]
-                    }
-                }
+                        "required": [
+                            "empty_slots",
+                            "free_bikes",
+                            "id",
+                            "latitude",
+                            "longitude",
+                            "name",
+                        ],
+                    },
+                },
             },
-            "required": ["company", "href", "id", "location", "name", "stations"]
+            "required": ["company", "href", "id", "location", "name", "stations"],
         }
     },
-    "required": ["network"]
+    "required": ["network"],
 }
+
 
 def validate_latest_file(**kwargs):
     # Get bucket name from params (fallback to "bronze" if missing)
@@ -75,7 +114,7 @@ def validate_latest_file(**kwargs):
     json_blobs = [blob for blob in blobs if blob.name.endswith(".json")]
     if not json_blobs:
         raise Exception("No JSON files found in the bucket.")
-    
+
     latest_blob = max(json_blobs, key=lambda b: b.updated)
     print(f"Validating: {latest_blob.name}")
 

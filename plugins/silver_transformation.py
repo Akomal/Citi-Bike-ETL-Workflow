@@ -4,6 +4,7 @@ import pandas as pd
 import json
 import io
 
+
 def raw_transformation(**kwargs):
     # Read parameters from DAG
     bronze_bucket = kwargs["dag"].params["bronze_bucket"]
