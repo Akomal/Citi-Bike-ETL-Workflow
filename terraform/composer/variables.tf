@@ -1,7 +1,7 @@
 variable "composer_region" {
   type        = string
   description = "Region for Composer environment"
-  default     = "europe-west4"  # Same as bucket_location by default
+  default     = "europe-west4" # Same as bucket_location by default
 }
 variable "project_id" {
   type        = string
