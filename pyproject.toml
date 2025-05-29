@@ -11,13 +11,10 @@ name = "komalazram"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
-packages = [
-    { include = "pipelines" }
-]
+
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-great-expectations = "^1.4.5"
 
 [tool.poetry.group.airflow.dependencies]
 apache-airflow = {version = "2.7.3", python = ">=3.10,<3.12"}
