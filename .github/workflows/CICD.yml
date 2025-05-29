@@ -1,0 +1,93 @@
+name: ETL CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  ci:
+    name: CI - Lint, Terraform Check, and Plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6
+
+      - name: Terraform Format Check
+        run: |
+          cd terraform
+          terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Validate
+        run: |
+          cd terraform
+          terraform validate
+
+      - name: Terraform Plan
+        run: |
+          cd terraform
+          terraform plan
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install Dependencies
+        run: poetry install
+
+      - name: Python Lint
+        run: poetry run flake8 .
+
+  cd:
+    name: CD - Deploy Infra and DAGs
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.6
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
+
+      - name: Deploy DAGs to Composer
+        run: |
+          gsutil -m cp -r dags gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
+
+      - name: Deploy plugins to Composer
+        run: |
+          gsutil -m cp -r plugins gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
+
+      - name: Deploy data to Composer
+        run: |
+          gsutil -m cp -r data gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
