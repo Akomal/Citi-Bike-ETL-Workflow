@@ -82,12 +82,12 @@ jobs:
 
       - name: Deploy DAGs to Composer
         run: |
-          gsutil -m cp -r dags gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
+          gcloud storage cp --recursive dags gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
 
       - name: Deploy plugins to Composer
         run: |
-          gsutil -m cp -r plugins gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
+          gcloud storage cp --recursive plugins gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
 
       - name: Deploy data to Composer
         run: |
-          gsutil -m cp -r data gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
+          gcloud storage cp --recursive data gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
