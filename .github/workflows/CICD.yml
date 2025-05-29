@@ -18,6 +18,11 @@ jobs:
         with:
           terraform_version: 1.4.6
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
       - name: Terraform Format Check
         run: |
           cd terraform
@@ -37,8 +42,6 @@ jobs:
         run: |
           cd terraform
           terraform plan
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -62,6 +65,11 @@ jobs:
         with:
           terraform_version: 1.4.6
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
       - name: Terraform Init
         run: |
           cd terraform
@@ -71,23 +79,15 @@ jobs:
         run: |
           cd terraform
           terraform apply -auto-approve
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
 
       - name: Deploy DAGs to Composer
         run: |
           gsutil -m cp -r dags gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
 
       - name: Deploy plugins to Composer
         run: |
           gsutil -m cp -r plugins gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
 
       - name: Deploy data to Composer
         run: |
           gsutil -m cp -r data gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDS }}
