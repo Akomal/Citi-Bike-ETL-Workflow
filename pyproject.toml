@@ -14,15 +14,10 @@ authors = ["Your Name <you@example.com>"]
 
 
 [tool.poetry.dependencies]
-python = ">=3.11,<4.0"
+python = ">=3.7"
 
-[tool.poetry.group.airflow.dependencies]
-apache-airflow = {version = "2.7.3", python = ">=3.10,<3.12"}
-apache-airflow-providers-common-sql = "1.8.0"
-apache-airflow-providers-ftp = "3.6.0"
-apache-airflow-providers-http = "4.6.0"
-apache-airflow-providers-imap = "3.4.0"
-apache-airflow-providers-slack = "^8.5.1"
+
+
 
 
 [build-system]
