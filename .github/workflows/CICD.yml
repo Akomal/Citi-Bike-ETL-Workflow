@@ -84,7 +84,7 @@ jobs:
         id: get-bucket
         run: |
           cd terraform
-          BUCKET_NAME=$(terraform output -raw composer_bucket_name)
+          BUCKET_NAME=$(terraform output -raw composer_bucket_name | tr -d '\r\n"')
           echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
 
       - name: Deploy DAGs to Composer
