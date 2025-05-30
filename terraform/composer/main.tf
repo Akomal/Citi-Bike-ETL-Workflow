@@ -9,6 +9,5 @@ resource "google_composer_environment" "citibike_composer" {
     node_config {
       service_account = var.composer_service_account
     }
-  
   }
 }
