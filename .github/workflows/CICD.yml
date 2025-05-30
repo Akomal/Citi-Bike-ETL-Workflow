@@ -85,7 +85,7 @@ jobs:
           cd terraform
           echo "COMPOSER_BUCKET=$(terraform output -raw composer_bucket_name)" >> $GITHUB_ENV
 
-            - name: Deploy DAGs to Composer
+      - name: Deploy DAGs to Composer
         run: |
           gcloud storage cp --recursive dags gs://$COMPOSER_BUCKET/
 
