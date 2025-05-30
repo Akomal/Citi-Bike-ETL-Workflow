@@ -80,21 +80,21 @@ jobs:
           cd terraform
           terraform apply -auto-approve
       
-      - name: Set COMPOSER_BUCKET env var
+      - name: Get Composer Bucket Name
+        id: get-bucket
         run: |
           cd terraform
-          BUCKET_NAME=$(terraform output -raw composer_bucket_name 2>/dev/null | tr -d '\r\n"')
-          echo "COMPOSER_BUCKET=$BUCKET_NAME" >> $GITHUB_ENV
-
+          BUCKET_NAME=$(terraform output -raw composer_bucket_name)
+          echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
 
       - name: Deploy DAGs to Composer
         run: |
-          gcloud storage cp --recursive dags gs://$COMPOSER_BUCKET/
+          gcloud storage cp --recursive dags gs://${{ steps.get-bucket.outputs.bucket_name }}/
 
       - name: Deploy plugins to Composer
         run: |
-          gcloud storage cp --recursive plugins gs://$COMPOSER_BUCKET/
+          gcloud storage cp --recursive plugins gs://${{ steps.get-bucket.outputs.bucket_name }}/
 
       - name: Deploy data to Composer
         run: |
-          gcloud storage cp --recursive data gs://$COMPOSER_BUCKET/
+          gcloud storage cp --recursive data gs://${{ steps.get-bucket.outputs.bucket_name }}/
