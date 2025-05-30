@@ -1,4 +1,4 @@
-resource "google_composer_environment" "citibike-composer" {
+resource "google_composer_environment" "citibike_composer" {
   name   = var.citibike_composer_name
   region = var.composer_region
   config {

@@ -79,15 +79,20 @@ jobs:
         run: |
           cd terraform
           terraform apply -auto-approve
-
-      - name: Deploy DAGs to Composer
+      
+      - name: Set COMPOSER_BUCKET env var
         run: |
-          gcloud storage cp --recursive dags gs://us-central1-citi-bike-proje-d0e7de87-bucket/dags/
+          cd terraform
+          echo "COMPOSER_BUCKET=$(terraform output -raw composer_bucket_name)" >> $GITHUB_ENV
+
+            - name: Deploy DAGs to Composer
+        run: |
+          gcloud storage cp --recursive dags gs://$COMPOSER_BUCKET/
 
       - name: Deploy plugins to Composer
         run: |
-          gcloud storage cp --recursive plugins gs://us-central1-citi-bike-proje-d0e7de87-bucket/plugins/
+          gcloud storage cp --recursive plugins gs://$COMPOSER_BUCKET/
 
       - name: Deploy data to Composer
         run: |
-          gcloud storage cp --recursive data gs://us-central1-citi-bike-proje-d0e7de87-bucket/data/
+          gcloud storage cp --recursive data gs://$COMPOSER_BUCKET/
