@@ -84,13 +84,20 @@ jobs:
         id: get-bucket
         run: |
           cd terraform
-          BUCKET_NAME=$(terraform output -raw composer_bucket_name | tr -d '\r\n"')
-          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
-          echo "Bucket name is: $BUCKET_NAME"  # For debugging logs
+          BUCKET_NAME=$(terraform output composer_bucket_name | sed 's/"//g')
+          echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
+          echo "Using bucket: ${BUCKET_NAME}"
+
+      - name: Verify Bucket Name
+        run: |
+          if [ -z "${{ steps.get-bucket.outputs.bucket_name }}" ]; then
+            echo "Error: Bucket name is empty"
+            exit 1
+          fi
+          echo "Verified bucket name: ${{ steps.get-bucket.outputs.bucket_name }}"
 
       - name: Deploy DAGs to Composer
         run: |
-          echo "Using bucket: ${{ steps.get-bucket.outputs.bucket_name }}"
           gcloud storage cp --recursive dags gs://${{ steps.get-bucket.outputs.bucket_name }}/
 
       - name: Deploy plugins to Composer
