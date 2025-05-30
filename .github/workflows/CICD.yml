@@ -83,7 +83,8 @@ jobs:
       - name: Set COMPOSER_BUCKET env var
         run: |
           cd terraform
-          echo "COMPOSER_BUCKET=$(terraform output -raw composer_bucket_name)" >> $GITHUB_ENV
+          COMPOSER_BUCKET=$(terraform output -raw composer_bucket_name)
+          echo "COMPOSER_BUCKET=$COMPOSER_BUCKET" >> $GITHUB_ENV
 
       - name: Deploy DAGs to Composer
         run: |
