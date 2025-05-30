@@ -85,10 +85,12 @@ jobs:
         run: |
           cd terraform
           BUCKET_NAME=$(terraform output -raw composer_bucket_name | tr -d '\r\n"')
-          echo "bucket_name=${BUCKET_NAME}" >> $GITHUB_OUTPUT
+          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
+          echo "Bucket name is: $BUCKET_NAME"  # For debugging logs
 
       - name: Deploy DAGs to Composer
         run: |
+          echo "Using bucket: ${{ steps.get-bucket.outputs.bucket_name }}"
           gcloud storage cp --recursive dags gs://${{ steps.get-bucket.outputs.bucket_name }}/
 
       - name: Deploy plugins to Composer
