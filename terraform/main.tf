@@ -13,4 +13,5 @@ module "composer" {
   citibike_composer_name   = var.citibike_composer_name # This was missing!
   composer_region          = var.composer_region
   composer_service_account = var.composer_service_account
+ 
 }

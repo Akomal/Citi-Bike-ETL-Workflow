@@ -29,3 +29,8 @@ variable "composer_service_account" {
   description = "The email address of the service account used by Cloud Composer"
   type        = string
 }
+
+variable "composer_bucket_name" {
+  description = "Name of the GCS bucket for Composer DAGs"
+  type        = string
+}
