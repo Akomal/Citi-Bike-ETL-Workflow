@@ -85,7 +85,11 @@ jobs:
         run: |
           cd terraform
           BUCKET_NAME=$(terraform output -raw composer_bucket_name 2>/dev/null)
-          echo "bucket_name=${BUCKET_NAME}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'bucket_name<<EOF'
+            echo "$BUCKET_NAME"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
 
       - name: Verify Bucket Name
