@@ -16,7 +16,7 @@ def fetch_and_upload(**kwargs):
         params = kwargs.get("params", {})
         bucket_name = params.get("bronze_bucket", "bronze")
 
-        # Fetch data
+ 
         response = requests.get(API_URL)
         response.raise_for_status()
         data = response.json()

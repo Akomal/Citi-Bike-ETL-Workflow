@@ -2,7 +2,7 @@ from google.cloud import storage
 import json
 from jsonschema import validate, ValidationError
 
-# --- Define the JSON Schema in-code ---
+# Define the JSON Schema in-code 
 CITI_BIKE_SCHEMA = {
     "type": "object",
     "properties": {
@@ -103,7 +103,7 @@ CITI_BIKE_SCHEMA = {
 
 
 def validate_latest_file(**kwargs):
-    # Get bucket name from params (fallback to "bronze" if missing)
+   
     bucket_name = kwargs.get("params", {}).get("bronze_bucket", "bronze")
 
     client = storage.Client()

@@ -7,11 +7,11 @@ from airflow.providers.google.cloud.operators.gcs import GCSDeleteObjectsOperato
 from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 
-# Custom Python callables
-from citi_bike_scrapper import fetch_and_upload
-from validation_bronze import validate_latest_file
-from silver_transformation import raw_transformation
-from silver_data_quality import validate_parquet_file
+
+from citi_bike_scrapper_bronze import fetch_and_upload
+from schema_validation_bronze import validate_latest_file
+from data_transformation_silver import raw_transformation
+
 
 default_args = {
     "owner": "airflow",
@@ -23,7 +23,7 @@ default_args = {
 with DAG(
     dag_id="citi_bike_bronze_ingestion",
     default_args=default_args,
-    schedule_interval="@daily",
+    schedule_interval="0 10 * * 0",  # Every Sunday at 10:00 AM,
     catchup=False,
     template_searchpath="/home/airflow/gcs/data/",
     tags=["citi_bike"],
@@ -45,11 +45,6 @@ with DAG(
         task_id="transform_to_silver",
         python_callable=raw_transformation,
         op_kwargs={"bucket_name": "{{ params.silver_bucket }}"},
-    )
-
-    dq_silver_validation = PythonOperator(
-        task_id="validate_silver_data_quality",
-        python_callable=validate_parquet_file,
     )
 
     load_parquet_to_bq = GCSToBigQueryOperator(
@@ -79,13 +74,7 @@ with DAG(
         },
     )
 
-    # DAG dependencies
-    (
-        ingest_task
-        >> validate_task
-        >> transform_task
-        >> dq_silver_validation
-        >> load_parquet_to_bq
-        >> clear_silver_task
-        >> populate_gold_table
-    )
+  
+    
+    ingest_task >> validate_task >> transform_task >> load_parquet_to_bq >> clear_silver_task >> populate_gold_table
+    
