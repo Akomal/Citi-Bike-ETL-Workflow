@@ -17,6 +17,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.6
+          terraform_wrapper: false
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
@@ -64,6 +65,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.6
+          terraform_wrapper: false
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
@@ -81,36 +83,27 @@ jobs:
           terraform apply -auto-approve
 
       - name: Get Composer Bucket Name
-        id: get-bucket
         run: |
           cd terraform
-          BUCKET_NAME=$(terraform output -raw composer_bucket_name 2>/dev/null)
-          echo "Composer bucket name: $BUCKET_NAME"
-          {
-            echo 'bucket_name<<EOF'
-            echo "$BUCKET_NAME"
-            echo 'EOF'
-          } >> "$GITHUB_OUTPUT"
+          COMPOSER_BUCKET=$(terraform output -raw composer_bucket_name 2>/dev/null || echo "")
+          echo "COMPOSER_BUCKET=$COMPOSER_BUCKET" >> $GITHUB_ENV
 
       - name: Verify Bucket Name
         run: |
-          if [ -z "${{ steps.get-bucket.outputs.bucket_name }}" ]; then
-            echo "❌ Error: Bucket name is empty"
+          if [ -z "$COMPOSER_BUCKET" ]; then
+            echo "❌ Error: Composer bucket name is empty"
             exit 1
           fi
-          echo "✅ Verified bucket name: ${{ steps.get-bucket.outputs.bucket_name }}"
+          echo "✅ Verified Composer bucket: $COMPOSER_BUCKET"
 
       - name: Deploy DAGs to Composer
         run: |
-          echo "Deploying DAGs to gs://${{ steps.get-bucket.outputs.bucket_name }}/dags/"
-          gcloud storage cp --recursive dags gs://${{ steps.get-bucket.outputs.bucket_name }}/dags/
+          gcloud storage cp --recursive dags gs://$COMPOSER_BUCKET/dags/
 
       - name: Deploy Plugins to Composer
         run: |
-          echo "Deploying plugins to gs://${{ steps.get-bucket.outputs.bucket_name }}/plugins/"
-          gcloud storage cp --recursive plugins gs://${{ steps.get-bucket.outputs.bucket_name }}/plugins/
+          gcloud storage cp --recursive plugins gs://$COMPOSER_BUCKET/plugins/
 
       - name: Deploy Data to Composer
         run: |
-          echo "Deploying data to gs://${{ steps.get-bucket.outputs.bucket_name }}/data/"
-          gcloud storage cp --recursive data gs://${{ steps.get-bucket.outputs.bucket_name }}/data/
+          gcloud storage cp --recursive data gs://$COMPOSER_BUCKET/data/
