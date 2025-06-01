@@ -74,7 +74,11 @@ with DAG(
         },
     )
 
-  
-    
-    ingest_task >> validate_task >> transform_task >> load_parquet_to_bq >> clear_silver_task >> populate_gold_table
-    
+    (
+        ingest_task
+        >> validate_task
+        >> transform_task
+        >> load_parquet_to_bq
+        >> clear_silver_task
+        >> populate_gold_table
+    )
