@@ -15,7 +15,7 @@ def raw_transformation(**kwargs):
     # Get the latest file from bronze bucket
     list_of_files = gcs_hook.list(bronze_bucket, prefix="raw/")
     if not list_of_files:
-        raise ValueError("No files found in bronze bucket")
+        raise ValueError("No files found in bronze")
 
     latest_file = sorted(list_of_files)[-1]
     json_data = json.loads(

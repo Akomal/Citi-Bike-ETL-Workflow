@@ -30,7 +30,7 @@ def fetch_and_upload(**kwargs):
         blob = bucket.blob(filename)
         blob.upload_from_string(json.dumps(data))
 
-        print(f"Successfully uploaded to bucket {filename} to {bucket_name}")
+        print(f"Successfully uploaded {filename} to {bucket_name}")
         return True
 
     except Exception as e:
