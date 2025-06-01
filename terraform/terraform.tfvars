@@ -1,4 +1,4 @@
-bucket_name              = "tf-bronze"
+bucket_name              = "tf-silver"
 bucket_location          = "EU"
 project_id               = "citi-bike-459310"
 citibike_composer_name   = "citibike-composer-env"
