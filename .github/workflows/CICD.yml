@@ -84,8 +84,9 @@ jobs:
         id: get-bucket
         run: |
           cd terraform
-          BUCKET_NAME=$(terraform output -raw composer_bucket_name)
-          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
+          BUCKET_NAME=$(terraform output -raw composer_bucket_name 2>/dev/null)
+          echo "bucket_name=${BUCKET_NAME}" >> "$GITHUB_OUTPUT"
+
 
       - name: Verify Bucket Name
         run: |
