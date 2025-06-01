@@ -125,6 +125,6 @@ def validate_latest_file(**kwargs):
         validate(instance=data, schema=CITI_BIKE_SCHEMA)
         print("JSON is valid.")
     except ValidationError as e:
-        print("Validation error:")
+        print("Validationerror:")
         print(e)
         raise
