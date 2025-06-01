@@ -1,7 +1,7 @@
 # backend.tf
 terraform {
   backend "gcs" {
-    bucket = "tt-state01" # Your existing bucket name
+    bucket = "tf-bronze" # Your existing bucket name
 
   }
 }
