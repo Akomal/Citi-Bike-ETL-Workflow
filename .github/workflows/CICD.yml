@@ -41,7 +41,7 @@ jobs:
       - name: Terraform Plan
         run: |
           cd terraform
-          terraform plan
+          terraform plan -input=false
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
