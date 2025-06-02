@@ -55,7 +55,7 @@ with DAG(
         source_format="PARQUET",
         write_disposition="WRITE_APPEND",
         create_disposition="CREATE_NEVER",
-        autodetect=False,
+        autodetect=True,
         ignore_unknown_values=True,
         project_id="citi-bike-459310",
     )
