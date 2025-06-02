@@ -52,7 +52,7 @@ This pipeline follows a **Bronze → Silver → Gold** data architecture pattern
 ├── terraform/                # Infrastructure configuration
 ├── data/            # SQL transformation logic (silver and gold)
 ├── README.md                 # Project documentation
-
+---
 ## Setup Instructions
 1. Clone the repository
 2. Add your GCP Service Account JSON key as a secret in your GitHub repository ( GCP_SA_KEY)
