@@ -52,6 +52,7 @@ This pipeline follows a **Bronze → Silver → Gold** data architecture pattern
 ├── terraform/                # Infrastructure configuration
 ├── data/            # SQL transformation logic (silver and gold)
 ├── README.md                 # Project documentation
+
 ---
 ## Setup Instructions
 1. Clone the repository
@@ -62,4 +63,4 @@ This pipeline follows a **Bronze → Silver → Gold** data architecture pattern
 5. Pass bucket names and other runtime parameters to the DAGs ( using Airflow Variables or environment configs in your DAG definition files)
 6. Push the code to github and it will trigger a CI/CD workflow
 
-
+---
