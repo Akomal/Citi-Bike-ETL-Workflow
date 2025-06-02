@@ -12,7 +12,7 @@ This project answers following questions:
 
 ## Architecture
 
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](Untitled-Page-3.png)
 
 This pipeline follows a **Bronze → Silver → Gold** data architecture pattern:
 
@@ -64,7 +64,7 @@ This pipeline follows a **Bronze → Silver → Gold** data architecture pattern
     ```
     poetry install
     ```
-4. Modify variable values in the terraform/variables.tf file to match your GCP project, region, and desired bucket names
-5. Pass bucket names and other runtime parameters to the DAGs ( using Airflow Variables or environment configs in your DAG definition files)
-6. Push the code to github and it will trigger a CI/CD workflow
+4. Modify variable values in the terraform files to match your GCP project, region, and desired bucket names
+5. Pass bucket names and other runtime parameters to the DAGs 
+6. Push the code to github and it will trigger a CI/CD workflow on master branch
 
