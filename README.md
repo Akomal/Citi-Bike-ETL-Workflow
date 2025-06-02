@@ -12,6 +12,8 @@ This project answers following questions:
 
 ## Architecture
 
+![Architecture Diagram](architecture.png)
+
 This pipeline follows a **Bronze → Silver → Gold** data architecture pattern:
 
 ### Bronze Layer
@@ -47,10 +49,10 @@ This pipeline follows a **Bronze → Silver → Gold** data architecture pattern
 ```bash
 .
 ├── dags/                     # Airflow DAGs
-├── plugins            # Python scripts for ETL
+├── plugins                   # Python scripts for ETL
 ├── schemas/                  # Schema definition files for BigQuery tables
 ├── terraform/                # Infrastructure configuration
-├── data/            # SQL transformation logic (silver and gold)
+├── data/                     # SQL for Silver (staging) and Gold (aggregation) layers
 ├── README.md                 # Project documentation
 
 ```
