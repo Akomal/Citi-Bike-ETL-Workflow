@@ -1,11 +1,10 @@
-#  Citi Bike Analytics Project
+#  Citi Bike ETL Workflow for Analytics-Ready Data
 
-This project leverages Citi Bike’s open API data to drive insights to support business decisions for station placement and service planning.
+This project builds an ETL pipeline that consumes Citi Bike’s open API data and stores it in a well-structured gold-level table. The cleaned and unified data is designed to support future analytics and decision-making processes, such as:
 
-This project answers following questions:
-- Identify stations frequently full or empty, highlighting redistribution needs.
-- Improve bike availability through smarter resource allocation.
-- Determine which stations have the highest and lowest usage.
+- Identifying stations that are frequently full or empty.
+- Improving resource allocation for bike availability.
+- Analyzing station-level usage patterns.
 
 
 ---
@@ -14,7 +13,7 @@ This project answers following questions:
 
 ![Architecture Diagram](architecture.png)
 
-This pipeline follows a **Bronze → Silver → Gold** data architecture pattern:
+The pipeline takes a weekly snapshot and provides the updated data. It follows **Bronze → Silver → Gold** data architecture pattern:
 
 ### Bronze Layer
 - Extracts and loads raw Citi Bike data from the API.
@@ -50,7 +49,7 @@ This pipeline follows a **Bronze → Silver → Gold** data architecture pattern
 .
 ├── dags/                     # Airflow DAGs
 ├── plugins                   # Python scripts for ETL
-├── schemas/                  # Schema definition files for BigQuery tables
+├── sql/                # Schema definition files for BigQuery tables
 ├── terraform/                # Infrastructure configuration
 ├── data/                     # SQL for Silver (staging) and Gold (aggregation) layers
 ├── README.md                 # Project documentation
