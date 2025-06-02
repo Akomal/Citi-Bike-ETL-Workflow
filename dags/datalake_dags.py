@@ -23,7 +23,7 @@ default_args = {
 with DAG(
     dag_id="citi_bike_bronze_ingestion",
     default_args=default_args,
-    schedule_interval="0 10 * * 0",  # Every Sunday at 10:00 AM,
+    schedule_interval="0 10 * * 1",  # Every Monday 10:00 AM
     catchup=False,
     template_searchpath="/home/airflow/gcs/data/",
     tags=["citi_bike"],

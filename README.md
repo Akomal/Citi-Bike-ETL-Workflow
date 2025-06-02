@@ -64,6 +64,7 @@ The pipeline takes a weekly snapshot and provides the updated data. It follows *
     poetry install
     ```
 4. Modify variable values in the terraform files to match your GCP project, region, and desired bucket names
-5. Pass bucket names and other runtime parameters to the DAGs 
-6. Push the code to github and it will trigger a CI/CD workflow on master branch
+5. Update environment secrets in github
+6. Pass bucket names and other runtime parameters to the DAGs
+7. Push the code to github and it will trigger a CI/CD workflow on master branch
 

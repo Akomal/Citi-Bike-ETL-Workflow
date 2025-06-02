@@ -5,10 +5,7 @@ from google.cloud import storage
 
 
 def fetch_and_upload(**kwargs):
-    """
-    Fetches data from Citi Bike API and uploads to GCS.
-    Uses Airflow params to get bucket name.
-    """
+
     API_URL = "https://api.citybik.es/v2/networks/citi-bike-nyc"
 
     try:
