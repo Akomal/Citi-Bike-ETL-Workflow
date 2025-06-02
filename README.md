@@ -49,7 +49,7 @@ The pipeline takes a weekly snapshot and provides the updated data. It follows *
 .
 ├── dags/                     # Airflow DAGs
 ├── plugins                   # Python scripts for ETL
-├── sql/                # Schema definition files for BigQuery tables
+├── sql/                      # Schema definition files for BigQuery tables
 ├── terraform/                # Infrastructure configuration
 ├── data/                     # SQL for Silver (staging) and Gold (aggregation) layers
 ├── README.md                 # Project documentation
