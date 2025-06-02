@@ -47,14 +47,15 @@ with DAG(
         op_kwargs={"bucket_name": "{{ params.silver_bucket }}"},
     )
 
-    load_parquet_to_bq = GCSToBigQueryOperator(
-        task_id="load_silver_parquet_to_bigquery",
+    load_parquet_to_staging = GCSToBigQueryOperator(
+        task_id="load_parquet_to_staging",
         bucket="silver113",
         source_objects=["citi-bike/*.parquet"],
-        destination_project_dataset_table="citi-bike-459310.lake_silver.master_bike_station_status",
+        destination_project_dataset_table="citi-bike-459310.lake_silver._staging_master_bike_station_status",
         source_format="PARQUET",
-        write_disposition="WRITE_APPEND",
-        autodetect=True,
+        write_disposition="WRITE_TRUNCATE",
+        autodetect=False,
+        ignore_unknown_values=True,
         project_id="citi-bike-459310",
     )
 
@@ -62,6 +63,15 @@ with DAG(
         task_id="clear_silver_folder",
         bucket_name="silver113",
         prefix="citi-bike/",
+    )
+    merge_staging_to_master = BigQueryInsertJobOperator(
+        task_id="merge_staging_to_master",
+        configuration={
+            "query": {
+                "query": "{% include 'merge_staging_to_master.sql' %}",
+                "useLegacySql": False,
+            }
+        },
     )
 
     populate_gold_table = BigQueryInsertJobOperator(
@@ -78,7 +88,8 @@ with DAG(
         ingest_task
         >> validate_task
         >> transform_task
-        >> load_parquet_to_bq
+        >> load_parquet_to_staging
         >> clear_silver_task
+        >> merge_staging_to_master
         >> populate_gold_table
     )

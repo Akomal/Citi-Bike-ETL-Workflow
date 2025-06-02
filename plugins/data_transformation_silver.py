@@ -46,6 +46,10 @@ def raw_transformation(**kwargs):
 
     df = flatten_json(json_data)
 
+    # add snapshot time
+    snapshot_time = datetime.now(timezone.utc).isoformat()
+    df["snapshot_time"] = snapshot_time
+
     try:
         if df["timestamp"].dtype.kind in "iuf":
             df["timestamp"] = pd.to_datetime(

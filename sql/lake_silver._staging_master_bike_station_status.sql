@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `citi-bike-459310.lake_silver.master_bike_station_status` (
+CREATE TABLE IF NOT EXISTS `citi-bike-459310.lake_silver._staging_master_bike_station_status` (
   network_id STRING,
   network_name STRING,
   station_id STRING,
@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS `citi-bike-459310.lake_silver.master_bike_station_sta
   has_ebikes BOOL,
   ebikes INT64,
   is_station_empty BOOL,
-  is_station_full BOOL
+  is_station_full BOOL,
+  snapshot_time TIMESTAMP
 )
 PARTITION BY DATE(timestamp)
 CLUSTER BY station_id;
