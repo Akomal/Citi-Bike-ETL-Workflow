@@ -47,7 +47,7 @@ def raw_transformation(**kwargs):
     df = flatten_json(json_data)
 
     # add snapshot time
-    snapshot_time = datetime.now(timezone.utc).isoformat()
+    snapshot_time = datetime.now(timezone.utc)
     df["snapshot_time"] = snapshot_time
 
     try:
