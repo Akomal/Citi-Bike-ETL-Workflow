@@ -53,7 +53,7 @@ with DAG(
         source_objects=["citi-bike/*.parquet"],
         destination_project_dataset_table="citi-bike-459310.lake_silver._staging_master_bike_station_status",
         source_format="PARQUET",
-        write_disposition="WRITE_TRUNCATE",
+        write_disposition="WRITE_APPEND",
         autodetect=False,
         ignore_unknown_values=True,
         project_id="citi-bike-459310",
