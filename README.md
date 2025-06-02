@@ -12,7 +12,7 @@ This project answers following questions:
 
 ## Architecture
 
-![Architecture Diagram](Untitled-Page-drawio.png)
+![Architecture Diagram](architecture.png)
 
 This pipeline follows a **Bronze → Silver → Gold** data architecture pattern:
 
