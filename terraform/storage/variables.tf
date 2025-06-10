@@ -4,7 +4,7 @@ variable "project_id" {
 }
 
 variable "bucket_names" {
-  type    = list(string)
+  type        = list(string)
   description = "Name of the GCS bucket"
 }
 
