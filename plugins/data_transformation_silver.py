@@ -25,25 +25,24 @@ def raw_transformation(**kwargs):
     def flatten_json(data):
 
         # Flatten using pandas.json_normalize
-        df = pd.json_normalize(
-        json_data["network"]["stations"],
-        sep="_"
-    )
+        df = pd.json_normalize(json_data["network"]["stations"], sep="_")
 
-    # Rename flattened keys to match your schema
-        df = df.rename(columns={
-            "id": "station_id",
-            "latitude": "latitude",
-            "longitude": "longitude",
-            "timestamp": "timestamp",
-            "free_bikes": "free_bikes",
-            "empty_slots": "empty_slots",
-            "extra.uid": "extra_uid",
-            "extra.renting": "renting",
-            "extra.returning": "returning",
-            "extra.has_ebikes": "has_ebikes",
-            "extra.ebikes": "ebikes"
-        })
+        # Rename flattened keys to match your schema
+        df = df.rename(
+            columns={
+                "id": "station_id",
+                "latitude": "latitude",
+                "longitude": "longitude",
+                "timestamp": "timestamp",
+                "free_bikes": "free_bikes",
+                "empty_slots": "empty_slots",
+                "extra.uid": "extra_uid",
+                "extra.renting": "renting",
+                "extra.returning": "returning",
+                "extra.has_ebikes": "has_ebikes",
+                "extra.ebikes": "ebikes",
+            }
+        )
 
         # Add network-level metadata
         df["network_id"] = json_data["network"]["id"]
@@ -96,11 +95,21 @@ def raw_transformation(**kwargs):
         inplace=True,
     )
     expected_columns = [
-    "network_id", "network_name", "station_id", "latitude", "longitude",
-    "timestamp", "free_bikes", "empty_slots", 
-    "extra_uid", "renting", "returning", "has_ebikes", "ebikes",
-    "snapshot_time"
-]
+        "network_id",
+        "network_name",
+        "station_id",
+        "latitude",
+        "longitude",
+        "timestamp",
+        "free_bikes",
+        "empty_slots",
+        "extra_uid",
+        "renting",
+        "returning",
+        "has_ebikes",
+        "ebikes",
+        "snapshot_time",
+    ]
     df = df.reindex(columns=expected_columns)
     parquet_buffer = io.BytesIO()
     df.to_parquet(
