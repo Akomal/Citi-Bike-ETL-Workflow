@@ -8,7 +8,7 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 
 
-from citi_bike_scrapper_bronze import fetch_validate_and_upload
+from citi_bike_scrapper_bronze import fetch_validate_upload
 from schema_validation_bronze import validate_latest_file
 from data_transformation_silver import raw_transformation
 
@@ -32,7 +32,7 @@ with DAG(
 
     ingest_task = PythonOperator(
         task_id="ingest_to_bronze",
-        python_callable=fetch_validate_and_upload,
+        python_callable=fetch_validate_upload,
         op_kwargs={"bucket_name": "{{ params.bronze_bucket }}"},
     )
 
