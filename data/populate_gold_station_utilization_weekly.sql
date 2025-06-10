@@ -10,7 +10,7 @@ WITH weekly_data AS (
     AVG(empty_slots) AS avg_empty_slots,
     ARRAY_AGG(TIMESTAMP_TRUNC(timestamp, HOUR) ORDER BY (free_bikes + empty_slots) DESC LIMIT 1)[OFFSET(0)] AS peak_hour
   FROM lake_silver.master_bike_station_status
-  WHERE timestamp >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+  WHERE timestamp >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY))
   GROUP BY station_id, network_id, week_start
 )
 SELECT * FROM weekly_data;
