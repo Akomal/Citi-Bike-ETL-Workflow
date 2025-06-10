@@ -27,7 +27,7 @@ with DAG(
     catchup=False,
     template_searchpath="/home/airflow/gcs/data/",
     tags=["citi_bike"],
-    params={"bronze_bucket": "tf-bronze", "silver_bucket": "tf-silver"},
+    params={"bronze_bucket": "tt-bronze", "silver_bucket": "tt-silver"},
 ) as dag:
 
     ingest_task = PythonOperator(
@@ -49,7 +49,7 @@ with DAG(
 
     load_parquet_to_staging = GCSToBigQueryOperator(
         task_id="load_parquet_to_staging",
-        bucket="silver113",
+        bucket="tt-silver",
         source_objects=["citi-bike/*.parquet"],
         destination_project_dataset_table="citi-bike-459310.lake_silver._staging_master_bike_station_status",
         source_format="PARQUET",
@@ -62,7 +62,7 @@ with DAG(
 
     clear_silver_task = GCSDeleteObjectsOperator(
         task_id="clear_silver_folder",
-        bucket_name="silver113",
+        bucket_name="tt-silver",
         prefix="citi-bike/",
     )
     merge_staging_to_master = BigQueryInsertJobOperator(
