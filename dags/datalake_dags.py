@@ -27,7 +27,7 @@ with DAG(
     catchup=False,
     template_searchpath="/home/airflow/gcs/data/",
     tags=["citi_bike"],
-    params={"bronze_bucket": "bronze113", "silver_bucket": "silver113"},
+    params={"bronze_bucket": "tf-bronze", "silver_bucket": "tf-silver"},
 ) as dag:
 
     ingest_task = PythonOperator(

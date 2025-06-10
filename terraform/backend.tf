@@ -1,7 +1,7 @@
 # backend.tf
 terraform {
   backend "gcs" {
-    bucket = "" # Your existing bucket name
+    bucket = "tt-states" # Your existing bucket name
 
   }
 }

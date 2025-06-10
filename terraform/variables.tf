@@ -3,7 +3,7 @@ variable "project_id" {
   description = "GCP project ID where the bucket will be created"
 }
 
-variable "bucket_name" {
+variable "bucket_names" {
   type        = string
   description = "Name of the GCS bucket"
 }
