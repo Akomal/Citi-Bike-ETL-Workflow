@@ -3,7 +3,7 @@ name: ETL CI/CD
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
@@ -67,7 +67,7 @@ jobs:
   cd:
     name: CD - Deploy Infra and DAGs
     needs: ci
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
 
