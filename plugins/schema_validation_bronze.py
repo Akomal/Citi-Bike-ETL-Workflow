@@ -2,7 +2,7 @@ from google.cloud import storage
 import json
 from jsonschema import validate, ValidationError
 
-# Define the JSON Schema in-code
+# Define the JSON Schema for Citi Bike data
 CITI_BIKE_SCHEMA = {
     "type": "object",
     "properties": {

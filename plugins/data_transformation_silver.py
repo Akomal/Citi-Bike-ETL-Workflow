@@ -22,33 +22,28 @@ def raw_transformation(**kwargs):
         gcs_hook.download(bronze_bucket, latest_file).decode("utf-8")
     )
 
+    # flatten the JSON data
     def flatten_json(data):
-
-        # Flatten using pandas.json_normalize
-        df = pd.json_normalize(json_data["network"]["stations"], sep="_")
-
-        # Rename flattened keys to match your schema
-        df = df.rename(
-            columns={
-                "id": "station_id",
-                "latitude": "latitude",
-                "longitude": "longitude",
-                "timestamp": "timestamp",
-                "free_bikes": "free_bikes",
-                "empty_slots": "empty_slots",
-                "extra.uid": "extra_uid",
-                "extra.renting": "renting",
-                "extra.returning": "returning",
-                "extra.has_ebikes": "has_ebikes",
-                "extra.ebikes": "ebikes",
+        flattened = []
+        network = data["network"]
+        for station in network["stations"]:
+            record = {
+                "network_id": network["id"],
+                "network_name": network["name"],
+                "station_id": station.get("id"),
+                "latitude": station.get("latitude"),
+                "longitude": station.get("longitude"),
+                "timestamp": station.get("timestamp"),
+                "free_bikes": station.get("free_bikes"),
+                "empty_slots": station.get("empty_slots"),
+                "extra_uid": station.get("extra", {}).get("uid"),
+                "renting": station.get("extra", {}).get("renting"),
+                "returning": station.get("extra", {}).get("returning"),
+                "has_ebikes": station.get("extra", {}).get("has_ebikes"),
+                "ebikes": station.get("extra", {}).get("ebikes"),
             }
-        )
-
-        # Add network-level metadata
-        df["network_id"] = json_data["network"]["id"]
-        df["network_name"] = json_data["network"]["name"]
-
-        return df
+            flattened.append(record)
+        return pd.DataFrame(flattened)
 
     df = flatten_json(json_data)
 
@@ -56,6 +51,7 @@ def raw_transformation(**kwargs):
     snapshot_time = datetime.now(timezone.utc)
     df["snapshot_time"] = snapshot_time
 
+    # Convert timestamp to UTC and handle errors
     try:
         if df["timestamp"].dtype.kind in "iuf":
             df["timestamp"] = pd.to_datetime(
@@ -94,23 +90,7 @@ def raw_transformation(**kwargs):
         },
         inplace=True,
     )
-    expected_columns = [
-        "network_id",
-        "network_name",
-        "station_id",
-        "latitude",
-        "longitude",
-        "timestamp",
-        "free_bikes",
-        "empty_slots",
-        "extra_uid",
-        "renting",
-        "returning",
-        "has_ebikes",
-        "ebikes",
-        "snapshot_time",
-    ]
-    df = df.reindex(columns=expected_columns)
+
     parquet_buffer = io.BytesIO()
     df.to_parquet(
         parquet_buffer,
