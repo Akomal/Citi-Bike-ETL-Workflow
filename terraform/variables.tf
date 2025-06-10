@@ -4,8 +4,8 @@ variable "project_id" {
 }
 
 variable "bucket_names" {
-  type        = string
-  description = "Name of the GCS bucket"
+  type        = list(string)
+  description = "Names of the GCS buckets"
 }
 
 variable "bucket_location" {
