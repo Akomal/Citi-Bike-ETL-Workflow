@@ -6,7 +6,9 @@ from jsonschema import validate, ValidationError
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 # Citi Bike JSON Schema
@@ -48,7 +50,7 @@ STATIONS_SCHEMA = {
         "latitude",
         "longitude",
         "name",
-    ]
+    ],
 }
 
 # Location Schema
@@ -60,7 +62,7 @@ LOCATION_SCHEMA = {
         "latitude": {"type": "number", "minimum": 40.4, "maximum": 40.9},
         "longitude": {"type": "number", "minimum": -74.3, "maximum": -73.7},
     },
-    "required": ["city", "country", "latitude", "longitude"]
+    "required": ["city", "country", "latitude", "longitude"],
 }
 
 # Network Schema
@@ -76,23 +78,18 @@ NETWORK_SCHEMA = {
         "id": {"type": "string", "pattern": "^citi-bike-nyc$"},
         "location": LOCATION_SCHEMA,
         "name": {"type": "string", "pattern": "Citi Bike"},
-        "stations": {
-            "type": "array",
-            "minItems": 1,
-            "items": STATIONS_SCHEMA
-        },
+        "stations": {"type": "array", "minItems": 1, "items": STATIONS_SCHEMA},
     },
-    "required": ["company", "href", "id", "location", "name", "stations"]
+    "required": ["company", "href", "id", "location", "name", "stations"],
 }
 
 # Main Citi Bike Schema
 CITI_BIKE_SCHEMA = {
     "type": "object",
-    "properties": {
-        "network": NETWORK_SCHEMA
-    },
-    "required": ["network"]
+    "properties": {"network": NETWORK_SCHEMA},
+    "required": ["network"],
 }
+
 
 def fetch_validate_upload(**kwargs):
     API_URL = "https://api.citybik.es/v2/networks/citi-bike-nyc"

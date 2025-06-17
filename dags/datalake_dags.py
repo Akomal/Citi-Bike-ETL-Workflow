@@ -35,7 +35,6 @@ with DAG(
         op_kwargs={"bucket_name": "{{ params.bronze_bucket }}"},
     )
 
-
     transform_task = PythonOperator(
         task_id="transform_to_silver",
         python_callable=raw_transformation,
