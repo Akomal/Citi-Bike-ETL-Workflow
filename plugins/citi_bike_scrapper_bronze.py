@@ -12,7 +12,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Citi Bike JSON Schema
-# Station Extra Schema
+
 STATION_EXTRA_SCHEMA = {
     "type": "object",
     "properties": {
