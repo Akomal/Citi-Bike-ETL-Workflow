@@ -1,6 +1,6 @@
-#  Citi Bike ETL Workflow for Analytics-Ready Data
+#  Citi Bike ELT Workflow for Analytics-Ready Data
 
-This project builds an ETL pipeline that consumes Citi Bike’s open API data and stores it in a well-structured gold-level table. The cleaned and unified data is designed to support future analytics and decision-making processes, such as:
+This project builds an ELT pipeline that consumes Citi Bike’s open API data and stores it in a well-structured gold-level table. The cleaned and unified data is designed to support future analytics and decision-making processes, such as:
 
 - Identifying stations that are frequently full or empty.
 - Improving resource allocation for bike availability.
